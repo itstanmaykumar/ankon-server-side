@@ -17,6 +17,7 @@ async function run() {
         await client.connect();
         const database = client.db('ankon');
         const paintingsCollection = database.collection('paintings');
+        const ordersCollection = database.collection('orders');
 
         // getting all paintings gallery
         app.get('/paintings', async (req, res) => {
@@ -31,12 +32,18 @@ async function run() {
             const singlePainting = await paintingsCollection.findOne(query);
             res.send(singlePainting);
         });
+        // getting all paintings gallery
+        app.get('/orders', async (req, res) => {
+            const cursor = ordersCollection.find({});
+            const orders = await cursor.toArray();
+            res.send(orders);
+        });
 
 
         // placing new orders
         app.post("/orders", async (req, res) => {
             const myCart = req.body;
-            const orders = await paintingsCollection.insertOne(myCart);
+            const orders = await ordersCollection.insertOne(myCart);
             res.json(orders);
         })
 
