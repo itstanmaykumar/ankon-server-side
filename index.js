@@ -36,8 +36,8 @@ async function run() {
         // placing new orders
         app.post("/orders", async (req, res) => {
             const myCart = req.body;
-            const allCart = await paintingsCollection.insertOne(myCart);
-            res.json(allCart);
+            const orders = await paintingsCollection.insertOne(myCart);
+            res.json(orders);
         })
 
     }
