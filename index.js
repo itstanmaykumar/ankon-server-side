@@ -32,6 +32,14 @@ async function run() {
             res.send(singlePainting);
         });
 
+
+        // placing new orders
+        app.post("/orders", async (req, res) => {
+            const myCart = req.body;
+            const allCart = await paintingsCollection.insertOne(myCart);
+            res.json(allCart);
+        })
+
     }
     finally {
         // await client.close();
