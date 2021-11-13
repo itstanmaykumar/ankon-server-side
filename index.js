@@ -29,6 +29,8 @@ async function run() {
         const reviewsCollection = database.collection('reviews');
         const usersCollection = database.collection('users');
 
+
+        // -----Paintings DB Operations
         // getting all paintings
         app.get('/paintings', async (req, res) => {
             const cursor = paintingsCollection.find({});
@@ -42,6 +44,9 @@ async function run() {
             const singlePainting = await paintingsCollection.findOne(query);
             res.send(singlePainting);
         });
+
+
+        // -----Orders DB Operations
         // getting all orders and filtering orders by current user email if email is paased
         app.get("/orders", async (req, res) => {
             let query = {};
@@ -53,40 +58,12 @@ async function run() {
             const myOrders = await cursor.toArray();
             res.send(myOrders);
         });
-        // getting all reviews
-        app.get('/reviews', async (req, res) => {
-            const cursor = reviewsCollection.find({});
-            const reviews = await cursor.toArray();
-            res.send(reviews);
-        });
-        // getting admin
-        app.get("/users", async (req, res) => {
-            const email = req.query.email;
-            const query = { email: email };
-            const user = await usersCollection.toArray(query);
-            res.send(user);
-        });
-
-
         // placing new orders
         app.post("/orders", async (req, res) => {
             const myCart = req.body;
             const orders = await ordersCollection.insertOne(myCart);
             res.json(orders);
         });
-        // adding new review
-        app.post("/reviews", async (req, res) => {
-            const currentReview = req.body;
-            const review = await reviewsCollection.insertOne(currentReview);
-            res.json(review);
-        });
-        // adding new user
-        // app.post("/users", async (req, res) => {
-        //     const currentUser = req.body;
-        //     const newUser = await usersCollection.insertOne(currentUser);
-        //     res.json(newUser);
-        // });
-
         // deleting single order from database
         app.delete('/orders/:orderId', async (req, res) => {
             const id = req.params.orderId;
@@ -95,6 +72,37 @@ async function run() {
             res.send(deleteOrder)
         });
 
+
+
+        // -----Reviews DB Operations
+        // getting all reviews
+        app.get('/reviews', async (req, res) => {
+            const cursor = reviewsCollection.find({});
+            const reviews = await cursor.toArray();
+            res.send(reviews);
+        });
+        // adding new review
+        app.post("/reviews", async (req, res) => {
+            const currentReview = req.body;
+            const review = await reviewsCollection.insertOne(currentReview);
+            res.json(review);
+        });
+
+
+
+        // getting admin
+        app.get("/users", async (req, res) => {
+            const email = req.query.email;
+            const query = { email: email };
+            const user = await usersCollection.findOne(query);
+            res.send(user);
+        });
+        // adding new user
+        // app.post("/users", async (req, res) => {
+        //     const currentUser = req.body;
+        //     const newUser = await usersCollection.insertOne(currentUser);
+        //     res.json(newUser);
+        // });
         // creating new users
         app.put('/users', async (req, res) => {
             const user = req.body;
