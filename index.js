@@ -39,12 +39,6 @@ async function run() {
             const singlePainting = await paintingsCollection.findOne(query);
             res.send(singlePainting);
         });
-        // getting all paintings gallery
-        // app.get('/orders', async (req, res) => {
-        //     const cursor = ordersCollection.find({});
-        //     const orders = await cursor.toArray();
-        //     res.send(orders);
-        // });
         // getting all orders and filtering orders by current user email if email is paased
         app.get("/orders", async (req, res) => {
             let query = {};
@@ -57,21 +51,20 @@ async function run() {
             res.send(myOrders);
         });
 
-        // let query = {};
-        // const email = req.query.email;
-        // if (email) {
-        //     query = { email: email };
-        // }
-        // const cursor = bookedTripCollection.find(query);
-        // const tripsCart = await cursor.toArray();
-        // res.send(tripsCart);
-
 
         // placing new orders
         app.post("/orders", async (req, res) => {
             const myCart = req.body;
             const orders = await ordersCollection.insertOne(myCart);
             res.json(orders);
+        })
+
+        // deleting single order from database
+        app.delete("/orders/:orderId", async (req, res) => {
+            const id = req.params.orderId;
+            const query = { _id: ObjectId(id) };
+            const deleteOrder = await ordersCollection.deleteOne(query);
+            res.send(deleteOrder)
         })
 
     }
