@@ -57,7 +57,7 @@ async function run() {
             const myCart = req.body;
             const orders = await ordersCollection.insertOne(myCart);
             res.json(orders);
-        })
+        });
 
         // deleting single order from database
         app.delete("/orders/:orderId", async (req, res) => {
@@ -65,8 +65,7 @@ async function run() {
             const query = { _id: ObjectId(id) };
             const deleteOrder = await ordersCollection.deleteOne(query);
             res.send(deleteOrder)
-        })
-
+        });
     }
     finally {
         // await client.close();
