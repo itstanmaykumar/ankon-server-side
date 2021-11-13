@@ -25,8 +25,9 @@ async function run() {
         const database = client.db('ankon');
         const paintingsCollection = database.collection('paintings');
         const ordersCollection = database.collection('orders');
+        const reviewsCollection = database.collection('reviews');
 
-        // getting all paintings gallery
+        // getting all paintings
         app.get('/paintings', async (req, res) => {
             const cursor = paintingsCollection.find({});
             const paintings = await cursor.toArray();
@@ -50,6 +51,12 @@ async function run() {
             const myOrders = await cursor.toArray();
             res.send(myOrders);
         });
+        // getting all reviews
+        app.get('/reviews', async (req, res) => {
+            const cursor = reviewsCollection.find({});
+            const reviews = await cursor.toArray();
+            res.send(reviews);
+        });
 
 
         // placing new orders
@@ -58,9 +65,15 @@ async function run() {
             const orders = await ordersCollection.insertOne(myCart);
             res.json(orders);
         });
+        // adding new review
+        app.post("/reviews", async (req, res) => {
+            const currentReview = req.body;
+            const review = await reviewsCollection.insertOne(currentReview);
+            res.json(review);
+        });
 
         // deleting single order from database
-        app.delete("/orders/:orderId", async (req, res) => {
+        app.delete('/orders/:orderId', async (req, res) => {
             const id = req.params.orderId;
             const query = { _id: ObjectId(id) };
             const deleteOrder = await ordersCollection.deleteOne(query);
