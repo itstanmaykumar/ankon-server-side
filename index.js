@@ -1,13 +1,20 @@
 const express = require("express");
-const app = express();
-const cors = require('cors');
+const bodyParser = require('body-parser');
+const cors = require('cors')
 require('dotenv').config();
 const { MongoClient } = require('mongodb');
 const ObjectId = require("mongodb").ObjectId;
-const port = process.env.PORT || 5000;
+
+const app = express();
+
+// let em = 
 
 app.use(cors());
 app.use(express.json());
+app.use(bodyParser.json())
+
+
+const port = process.env.PORT || 5000
 
 const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.o0zsr.mongodb.net/myFirstDatabase?retryWrites=true&w=majority`;
 const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
@@ -33,19 +40,31 @@ async function run() {
             res.send(singlePainting);
         });
         // getting all paintings gallery
-        app.get('/orders', async (req, res) => {
-            const cursor = ordersCollection.find({});
-            const orders = await cursor.toArray();
-            res.send(orders);
-        });
-        // filtering orders by current user email
+        // app.get('/orders', async (req, res) => {
+        //     const cursor = ordersCollection.find({});
+        //     const orders = await cursor.toArray();
+        //     res.send(orders);
+        // });
+        // getting all orders and filtering orders by current user email if email is paased
         app.get("/orders", async (req, res) => {
+            let query = {};
             const email = req.query.email;
-            const query = { email: email };
+            if (email) {
+                query = { email: email };
+            }
             const cursor = ordersCollection.find(query);
             const myOrders = await cursor.toArray();
             res.send(myOrders);
         });
+
+        // let query = {};
+        // const email = req.query.email;
+        // if (email) {
+        //     query = { email: email };
+        // }
+        // const cursor = bookedTripCollection.find(query);
+        // const tripsCart = await cursor.toArray();
+        // res.send(tripsCart);
 
 
         // placing new orders
