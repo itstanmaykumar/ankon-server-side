@@ -4,6 +4,7 @@ const cors = require('cors')
 require('dotenv').config();
 const { MongoClient } = require('mongodb');
 const ObjectId = require("mongodb").ObjectId;
+const { query } = require("express");
 
 const app = express();
 
@@ -26,6 +27,7 @@ async function run() {
         const paintingsCollection = database.collection('paintings');
         const ordersCollection = database.collection('orders');
         const reviewsCollection = database.collection('reviews');
+        const usersCollection = database.collection('users');
 
         // getting all paintings
         app.get('/paintings', async (req, res) => {
@@ -57,6 +59,14 @@ async function run() {
             const reviews = await cursor.toArray();
             res.send(reviews);
         });
+        // getting admin
+        app.get("/users", async (req, res) => {
+            const email = req.query.email;
+            const query = { email: email };
+            const cursor = usersCollection.find(query);
+            const user = await cursor.toArray();
+            res.send(user);
+        });
 
 
         // placing new orders
@@ -71,6 +81,12 @@ async function run() {
             const review = await reviewsCollection.insertOne(currentReview);
             res.json(review);
         });
+        // adding new user
+        app.post("/users", async (req, res) => {
+            const currentUser = req.body;
+            const newUser = await usersCollection.insertOne(currentUser);
+            res.json(newUser);
+        });
 
         // deleting single order from database
         app.delete('/orders/:orderId', async (req, res) => {
@@ -79,6 +95,15 @@ async function run() {
             const deleteOrder = await ordersCollection.deleteOne(query);
             res.send(deleteOrder)
         });
+
+        // setting admin
+        app.put('/users/admin', async (req, res) => {
+            const user = req.body;
+            const filter = { email: user.email };
+            const updateDoc = { $set: { role: true } };
+            const newAdmin = await usersCollection.updateOne(filter, updateDoc);
+            res.json(newAdmin);
+        })
     }
     finally {
         // await client.close();
