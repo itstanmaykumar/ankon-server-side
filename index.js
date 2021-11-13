@@ -104,6 +104,14 @@ async function run() {
             const newAdmin = await usersCollection.updateOne(filter, updateDoc);
             res.json(newAdmin);
         })
+        // adding new user
+        app.put("/users", async (req, res) => {
+            const user = req.body;
+            const filter = { email: user.email };
+            const updateDoc = { $set: { email: user.email, name: user.name } };
+            const newUser = await usersCollection.updateOne(filter, updateDoc);
+            res.json(newUser);
+        });
     }
     finally {
         // await client.close();
