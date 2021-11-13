@@ -81,11 +81,11 @@ async function run() {
             res.json(review);
         });
         // adding new user
-        app.post("/users", async (req, res) => {
-            const currentUser = req.body;
-            const newUser = await usersCollection.insertOne(currentUser);
-            res.json(newUser);
-        });
+        // app.post("/users", async (req, res) => {
+        //     const currentUser = req.body;
+        //     const newUser = await usersCollection.insertOne(currentUser);
+        //     res.json(newUser);
+        // });
 
         // deleting single order from database
         app.delete('/orders/:orderId', async (req, res) => {
@@ -95,6 +95,15 @@ async function run() {
             res.send(deleteOrder)
         });
 
+        // creating new users
+        app.put('/users', async (req, res) => {
+            const user = req.body;
+            const filter = { email: user.email };
+            const options = { upsert: true };
+            const updateDoc = { $set: user };
+            const newUser = await usersCollection.updateOne(filter, updateDoc, options);
+            res.json(newUser);
+        })
         // setting admin
         app.put('/users/admin', async (req, res) => {
             const user = req.body;
