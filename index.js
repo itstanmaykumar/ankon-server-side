@@ -91,11 +91,15 @@ async function run() {
 
 
         // getting admin
-        app.get("/users", async (req, res) => {
-            const email = req.query.email;
+        app.get("/users/:email", async (req, res) => {
+            const email = req.params.email;
             const query = { email: email };
             const user = await usersCollection.findOne(query);
-            res.send(user);
+            let status = false;
+            if (user?.role) {
+                status = true;
+            }
+            res.json({ isAdmin: status });
         });
         // adding new user
         // app.post("/users", async (req, res) => {
