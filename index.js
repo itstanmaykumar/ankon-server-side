@@ -95,7 +95,8 @@ async function run() {
             const email = req.params.email;
             const query = { email: email };
             const user = await usersCollection.findOne(query);
-            res.json(user?.role);
+            const isAdmin = user?.role ? true : false;
+            res.json(isAdmin);
         });
         // adding new user
         // app.post("/users", async (req, res) => {
