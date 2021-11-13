@@ -40,11 +40,8 @@ async function run() {
         });
         // filtering orders by current user email
         app.get("/orders", async (req, res) => {
-            let query = {};
             const email = req.query.email;
-            if (email) {
-                query = { email: email };
-            }
+            const query = { email: email };
             const cursor = ordersCollection.find(query);
             const myOrders = await cursor.toArray();
             res.send(myOrders);
