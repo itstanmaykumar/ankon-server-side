@@ -44,6 +44,12 @@ async function run() {
             const singlePainting = await paintingsCollection.findOne(query);
             res.send(singlePainting);
         });
+        app.delete('/paintings/:paintingId', async (req, res) => {
+            const id = req.params.paintingId;
+            const query = { _id: ObjectId(id) };
+            const deletePainting = await paintingsCollection.deleteOne(query);
+            res.send(deletePainting)
+        });
 
 
         // -----Orders DB Operations
