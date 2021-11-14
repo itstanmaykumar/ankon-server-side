@@ -71,6 +71,19 @@ async function run() {
             const deleteOrder = await ordersCollection.deleteOne(query);
             res.send(deleteOrder)
         });
+        // updating order status
+        app.put('/orders/:orderId', async (req, res) => {
+            const id = req.params.orderId;
+            const query = { _id: ObjectId(id) };
+            const options = { upsert: true };
+            const updateDoc = {
+                $set: {
+                    status: true
+                },
+            };
+            const updateStatus = await bookedTripCollection.updateOne(query, updateDoc, options)
+            res.send(updateStatus);
+        })
 
 
 
@@ -90,7 +103,7 @@ async function run() {
 
 
 
-        // getting admin
+        // getting admin status
         app.get("/users/:email", async (req, res) => {
             const email = req.params.email;
             const query = { email: email };
@@ -98,12 +111,6 @@ async function run() {
             const isAdmin = user?.role ? true : false;
             res.json(isAdmin);
         });
-        // adding new user
-        // app.post("/users", async (req, res) => {
-        //     const currentUser = req.body;
-        //     const newUser = await usersCollection.insertOne(currentUser);
-        //     res.json(newUser);
-        // });
         // creating new users
         app.put('/users', async (req, res) => {
             const user = req.body;
