@@ -44,6 +44,13 @@ async function run() {
             const singlePainting = await paintingsCollection.findOne(query);
             res.send(singlePainting);
         });
+        //adding new painting
+        app.post("/paintings", async (req, res) => {
+            const currentProduct = req.body;
+            const product = await paintingsCollection.insertOne(currentProduct);
+            res.json(product);
+        });
+        //deleting a painting
         app.delete('/paintings/:paintingId', async (req, res) => {
             const id = req.params.paintingId;
             const query = { _id: ObjectId(id) };
