@@ -81,7 +81,7 @@ async function run() {
                     status: true
                 },
             };
-            const updateStatus = await bookedTripCollection.updateOne(query, updateDoc, options)
+            const updateStatus = await ordersCollection.updateOne(query, updateDoc, options)
             res.send(updateStatus);
         })
 
