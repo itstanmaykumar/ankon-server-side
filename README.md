@@ -1,10 +1,11 @@
 # ankon Project Documentation
 
+Project Name: ANKON
 Live Site Link: https://ankon-e942d.web.app/
 
 ## Project Description in Brief
 
-It's a website where you find diffrent package paintings which you can buy.
+It's a website where you find diffrent reproduced paintings which you can buy.
 
 
 
@@ -12,31 +13,31 @@ It's a website where you find diffrent package paintings which you can buy.
 
 ### `Sign In`
 
-You can sign in with google account.
+You can sign in with google account and email, password.
 
 ### `Sign Up`
 
-You can sign up with google account.
+You can sign up with google account and email, password.
 
-### `About`
+### `Gallery`
 
-You can see see the information about pintrip here.
+You wiill see all the available product here.
 
-### `Book Trips`
+### `Review`
 
-You can book trips as your likings.
+You can give feedbacks and it will show in the homepage.
 
-### `Admin`
+### `Dashboard`
 
-Here you can control all the bookings of all users and you also can add new trip packages here. 
+You can see my orders, pay, review options in dashboard if you are a general user. You will can manage orders and update their status, manage products and delete them, add a new product, and you can also make another admin by one's email address.
 
 
 
 ## Programming Features Of This Project
 
-### `Firbase Authorization`
+### `Firbase Authorization & Authentication`
 
-This project has the feature of firebase authorization.
+This project has the feature of firebase authorization & authentication.
 
 ### `Database`
 
@@ -57,6 +58,10 @@ This site is completely responsive as it was created with Bootstrap (a CSS frame
 ### `Deployment`
 
 This site was deployed on Firebase. The live site link is provided on the top of this file.
+
+### `Admin Panel`
+
+This site has the ability to differ between general user and admins.
 
 
 
